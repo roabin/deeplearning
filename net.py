@@ -1,5 +1,5 @@
-#data
 from torch import nn 
+#data
 #build network architecture
 class MyNetwork(nn.Module):
    def __init__():
