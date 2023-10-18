@@ -28,11 +28,26 @@ class RubinNN(nn.Module):
 		super(RubinNN,self).__init__()
 			#归一。。view()
 		self.network = nn.Sequential(
-			nn.Flatten(),
-			nn.Linear(28*28, 100),
+			nn.Conv2d(1, 8, kernel_size = 5, padding = 5//2, stride = 2),
+			nn.BatchNorm2d(8),
+			#nn.Dropout2d(),
 			nn.ReLU(),
-			nn.Linear(100,10),
+			nn.Conv2d(8, 16, kernel_size = 3, padding = 1, stride = 2),
+			nn.BatchNorm2d(16),
+			#nn.Dropout2d(),
+			nn.ReLU(),
+			nn.Conv2d(16, 32, kernel_size = 3, padding = 1, stride = 2),
+			nn.BatchNorm2d(32),
+			#nn.Dropout2d(),
+			nn.ReLU(),
+			nn.Conv2d(32, 10, kernel_size = 3, padding = 1, stride = 2),
+			# nn.BatchNorm2d(10),
+			# nn.Dropout2d(),
+			nn.Flatten()
+			# nn.Linear(28*28, 100),
 			# nn.ReLU(),
+			# nn.Linear(100,10),
+			
 			# nn.Linear(512,10),
 			# nn.Softmax(),
 			# nn.pool(),
@@ -56,7 +71,7 @@ def train(model, loss_fn, opt, train_dl):
 		loss.backward()
 		opt.step()
 		opt.zero_grad()
-		pdb.set_trace()
+		#pdb.set_trace()
 		if batch % 100 == 0:
 			loss = loss.item()
 			print(f"loss:{loss:>7f}")
@@ -96,8 +111,8 @@ valid_ds = datasets.MNIST(
 	)
 
 # HyperParameters settings
-lr = 1e-3
-epochs = 10
+lr = 0.03
+epochs = 100
 bs = 64
 	            ## Begin of Training
 train_dl = DataLoader(train_ds, batch_size = bs, shuffle = True)
